@@ -53,6 +53,69 @@ public:
 
 		Temp->pNext = New;
 	}
+	void insert(int Data, int index)
+	{
+		Element* New = new Element(Data);	
+		if (index == 0)return push_front(Data);
+		int ctr = 0;
+		Element* Temp = Head;
+		Element* TempNext = Head;
+		while (Temp)
+		{
+			++ctr;
+			TempNext = Temp->pNext;
+			if (ctr == index)
+			{
+				Temp->pNext = New;
+				New->pNext = TempNext;
+			}
+			Temp = Temp->pNext;
+		}
+	}
+	void pop_front()
+	{
+		int ctr = 0;
+		Element* Temp = Head;
+		while (Temp->pNext)
+		{
+			++ctr;
+			if (ctr == 2)Head = Temp;
+			Temp = Temp->pNext;
+		}
+	}
+	void pop_back()
+	{
+		int ctr = 0;
+		Element* Temp = Head;
+		Element* TempNext = Head;
+		while (Temp)
+		{
+			++ctr;			
+			TempNext = Temp->pNext;			
+			if (TempNext->pNext == nullptr)
+			{
+				Temp->pNext = nullptr;
+			}			
+			Temp = Temp->pNext;			
+		}		
+	}
+	void erase(int index)
+	{
+		if (index == 0)return pop_front();
+		int ctr = 0;
+		Element* Temp = Head;	
+		Element* TempNext = Head;
+		while (Temp)
+		{
+			++ctr;
+			TempNext = Temp->pNext;
+			if (ctr == index)
+			{
+				Temp->pNext = TempNext->pNext;
+			}
+			Temp = Temp->pNext;
+		}
+	}
 
 	//methods
 	void print() const
@@ -80,6 +143,9 @@ void main()
 		//list.push_front(rand() % 100);
 	}
 	list.print();
-	//list.push_back(123);
-	//list.print();
+	//list.pop_front();
+	//list.pop_back();
+	//list.erase(4);
+	//list.insert(4,5);
+	list.print();
 }

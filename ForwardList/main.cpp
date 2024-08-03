@@ -1,5 +1,8 @@
 ﻿#include<iostream>
 using namespace std;
+using std::cout;
+using std::cin;
+using std::endl;
 
 #define tab "\t"
 
@@ -7,38 +10,61 @@ class Element
 {
 	int Data;
 	Element* pNext;
+	static int count;
 public:
 	Element(int Data, Element* pNext = nullptr) : Data(Data), pNext(pNext)
 	{
+		count++;
 		cout << "EConstructor:\t" << this << endl;
 	}
 	~Element()
 	{
+		count--;
 		cout << "EDestructor:\t" << this << endl;
 	}
 	friend class ForwardList;
 };
 
+int Element::count = 0;
+
 class ForwardList
 {
 	Element* Head;
+	unsigned int size;
 public:
 	ForwardList()
 	{
 		Head = nullptr;
+		size = 0;
 		cout << "LConstrustor\t" << this << endl;
+	}
+	ForwardList(const ForwardList& other):ForwardList()
+	{
+		*this = other;
+		cout << "LCopyConstrustor\t" << this << endl;
 	}
 	~ForwardList()
 	{
+		while (Head)pop_front();		
 		cout << "LDestrustor\t" << this << endl;
+	}
+
+	//operators
+	ForwardList& operator=(const ForwardList& other)
+	{
+		if (this == &other)return *this;
+		while (Head)pop_front();
+		for (Element* Temp = other.Head; Temp; Temp = Temp->pNext)
+			push_back(Temp->Data);
+		cout << "LCopyAssignment\t" << this << endl;
+		return *this;
 	}
 
 	//adding elements
 	void push_front(int Data)
 	{
-		Element* New = new Element(Data);
-		New->pNext = Head;
-		Head = New;
+		Head = new Element(Data, Head);		
+		size++;
 	}
 	void push_back(int Data)
 	{
@@ -48,91 +74,64 @@ public:
 		{
 			Temp = Temp->pNext;
 		}
-
-		Element* New = new Element(Data);
-
-		Temp->pNext = New;
+		Temp->pNext = new Element(Data);
+		size++;
 	}
-	void insert(int Data, int index)
+	void insert(int Data, int Index)
 	{
-		Element* New = new Element(Data);	
-		if (index == 0)return push_front(Data);
-		int ctr = 0;
+		if (Index > Head->count)return;
+		if (Index == 0) return push_front(Data);
 		Element* Temp = Head;
-		Element* TempNext = Head;
-		while (Temp)
-		{
-			++ctr;
-			TempNext = Temp->pNext;
-			if (ctr == index)
-			{
-				Temp->pNext = New;
-				New->pNext = TempNext;
-			}
-			Temp = Temp->pNext;
-		}
+		for (int i = 0; i < Index - 1; i++)Temp = Temp->pNext;
+		Temp->pNext = new Element(Data, Temp->pNext);
+		size++;
 	}
 	void pop_front()
 	{
-		int ctr = 0;
-		Element* Temp = Head;
-		while (Temp->pNext)
-		{
-			++ctr;
-			if (ctr == 2)Head = Temp;
-			Temp = Temp->pNext;
-		}
+		if (Head == nullptr)return;
+		Element* erased = Head;
+		Head = Head->pNext;
+		delete erased;
+		size--;
 	}
 	void pop_back()
 	{
-		int ctr = 0;
+		if (Head == nullptr || Head->pNext == nullptr)return pop_front();
 		Element* Temp = Head;
-		Element* TempNext = Head;
-		while (Temp)
-		{
-			++ctr;			
-			TempNext = Temp->pNext;			
-			if (TempNext->pNext == nullptr)
-			{
-				Temp->pNext = nullptr;
-			}			
-			Temp = Temp->pNext;			
-		}		
+		while (Temp->pNext->pNext)Temp = Temp->pNext;
+		delete Temp->pNext;
+		Temp->pNext = nullptr;
+		size--;
 	}
-	void erase(int index)
-	{
-		if (index == 0)return pop_front();
-		int ctr = 0;
-		Element* Temp = Head;	
-		Element* TempNext = Head;
-		while (Temp)
-		{
-			++ctr;
-			TempNext = Temp->pNext;
-			if (ctr == index)
-			{
-				Temp->pNext = TempNext->pNext;
-			}
-			Temp = Temp->pNext;
-		}
+	void erase(int Index)
+	{		
+		if (Index >= size)return;
+		if (Index == 0) return pop_front();
+		Element* Temp = Head;
+		for (int i = 0; i < Index - 1; i++) Temp = Temp->pNext;
+		Element* erased = Temp->pNext;
+		Temp->pNext = Temp->pNext->pNext;
+		delete erased;
+		size--;
 	}
 
 	//methods
 	void print() const
-	{
-		cout << "Head:\t" << Head << endl;
-		Element* Temp = Head;
-		while (Temp)
-		{
+	{		
+		for (Element* Temp = Head; Temp; Temp = Temp->pNext)
 			cout << Temp << tab << Temp->Data << tab << Temp->pNext << endl;
-			Temp = Temp->pNext;
-		}
+		cout << "Количество элементов списка: " << size << endl;
+		cout << "Общее количество элементов: " << Element::count << endl;
 	}
 };
+
+//#define BASE_CHECK
+//#define COUNT_CHECK
 
 void main()
 {
 	setlocale(LC_ALL, "");
+#ifdef BASE_CHECK
 	//Element element(5);
 	int n;
 	cout << "Введите количество элементов : "; cin >> n;
@@ -145,7 +144,42 @@ void main()
 	list.print();
 	//list.pop_front();
 	//list.pop_back();
-	//list.erase(4);
-	//list.insert(4,5);
+	//list.erase(5);
+	list.insert(123, 2);
 	list.print();
+#endif // BASE_CHECK
+
+#ifdef COUNT_CHECK
+	ForwardList list1;
+	list1.push_back(3);
+	list1.push_back(5);
+	list1.push_back(8);
+	list1.push_back(13);
+	list1.push_back(21);
+	list1.print();
+
+	ForwardList list2;
+	list2.push_back(34);
+	list2.push_back(55);
+	list2.push_back(89);
+	list2.print();
+#endif // COUNT_CHECK
+
+	int n;
+	cout << "Введите количество элементов : "; cin >> n;
+	ForwardList list;
+	for (int i = 0; i < n; i++)
+	{
+		//list.push_back(rand() % 100);
+		list.push_front(rand() % 100);
+	}
+	
+	cout << "List filled" << endl;
+
+	list.print();
+
+	ForwardList list2 = list;
+	//ForwardList list2;
+	//list2 = list;
+	list2.print();
 }

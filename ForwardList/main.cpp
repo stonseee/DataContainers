@@ -38,10 +38,16 @@ public:
 		size = 0;
 		cout << "LConstrustor\t" << this << endl;
 	}
-	ForwardList(const ForwardList& other):ForwardList()
+	ForwardList(const ForwardList& other) : ForwardList()
 	{
 		*this = other;
 		cout << "LCopyConstrustor\t" << this << endl;
+	}
+	ForwardList(ForwardList&& other)noexcept : Head(other.Head), size(other.size)
+	{
+		other.Head = nullptr;
+		other.size = 0;			
+		cout << "MoveConstructor\t" << this << endl;
 	}
 	~ForwardList()
 	{
@@ -57,6 +63,17 @@ public:
 		for (Element* Temp = other.Head; Temp; Temp = Temp->pNext)
 			push_back(Temp->Data);
 		cout << "LCopyAssignment\t" << this << endl;
+		return *this;
+	}
+	ForwardList& operator=(ForwardList&& other)noexcept
+	{
+		if (this == &other)return *this;
+		delete this->Head;
+		this->Head = other.Head;
+		this->size = other.size;
+		other.Head = nullptr;
+		other.size = 0;
+		cout << "MoveAssignment\t" << this << endl;
 		return *this;
 	}
 
@@ -176,10 +193,11 @@ void main()
 	
 	cout << "List filled" << endl;
 
-	list.print();
-
-	ForwardList list2 = list;
+	//list.print();
+	//ForwardList list2 = list;	
+	ForwardList list2 = std::move(list);	
 	//ForwardList list2;
 	//list2 = list;
 	list2.print();
+	
 }

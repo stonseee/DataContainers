@@ -31,12 +31,21 @@ class ForwardList
 {
 	Element* Head;
 	unsigned int size;
+	
 public:
 	ForwardList()
 	{
 		Head = nullptr;
 		size = 0;
 		cout << "LConstrustor\t" << this << endl;
+	}
+	ForwardList(const std::initializer_list<int>& il) : ForwardList()
+	{
+		//cout << typeid(il.begin()).name() << endl;
+		for (int const* it = il.begin(); it != il.end(); it++)
+		{
+			push_back(*it);
+		}		
 	}
 	ForwardList(const ForwardList& other) : ForwardList()
 	{
@@ -61,14 +70,15 @@ public:
 		if (this == &other)return *this;
 		while (Head)pop_front();
 		for (Element* Temp = other.Head; Temp; Temp = Temp->pNext)
-			push_back(Temp->Data);
+			push_front(Temp->Data);
 		cout << "LCopyAssignment\t" << this << endl;
+		reverse();
 		return *this;
 	}
 	ForwardList& operator=(ForwardList&& other)noexcept
 	{
 		if (this == &other)return *this;
-		delete this->Head;
+		while (Head)pop_front();
 		this->Head = other.Head;
 		this->size = other.size;
 		other.Head = nullptr;
@@ -76,6 +86,17 @@ public:
 		cout << "MoveAssignment\t" << this << endl;
 		return *this;
 	}
+	int& operator[](int idx)
+	{		
+		int ctr = 0;
+		Element* Temp = this->Head;
+		while (Temp != nullptr)
+		{
+			if (ctr == idx)	return Temp->Data;
+			Temp = Temp->pNext;
+			ctr++;
+		}
+	}	
 
 	//adding elements
 	void push_front(int Data)
@@ -133,17 +154,36 @@ public:
 	}
 
 	//methods
+	void reverse()
+	{
+		ForwardList buffer;
+		while (Head)
+		{
+			buffer.push_front(Head->Data);
+			pop_front();
+		}
+		this->Head = buffer.Head;
+		this->size = buffer.size;
+		buffer.Head = nullptr;
+	}
 	void print() const
 	{		
 		for (Element* Temp = Head; Temp; Temp = Temp->pNext)
 			cout << Temp << tab << Temp->Data << tab << Temp->pNext << endl;
 		cout << "Количество элементов списка: " << size << endl;
 		cout << "Общее количество элементов: " << Element::count << endl;
-	}
+	}	
+	unsigned int get_size()
+	{
+		return size;
+	}	
 };
 
 //#define BASE_CHECK
 //#define COUNT_CHECK
+//#define PERFORMANCE_CHECK
+//#define RANGE_BASED_FOR_ARRAY
+#define RANGE_BASED_FOR_LIST
 
 void main()
 {
@@ -182,6 +222,7 @@ void main()
 	list2.print();
 #endif // COUNT_CHECK
 
+#ifdef PERFORMANCE_CHECK
 	int n;
 	cout << "Введите количество элементов : "; cin >> n;
 	ForwardList list;
@@ -190,14 +231,48 @@ void main()
 		//list.push_back(rand() % 100);
 		list.push_front(rand() % 100);
 	}
-	
 	cout << "List filled" << endl;
-
 	//list.print();
-	//ForwardList list2 = list;	
-	ForwardList list2 = std::move(list);	
+
+	cout << "making cope" << endl;
+	ForwardList list2 = list;
 	//ForwardList list2;
 	//list2 = list;
-	list2.print();
+	//list2.print();
+	cout << "copy DONE" << endl;
+#endif // PERFORMANCE_CHECK
+
+#ifdef RANGE_BASED_FOR_ARRAY
+	int arr[] = { 3, 5, 8, 13, 21, 34, 55, 89, 144 };
+	for (int i = 0; i < sizeof(arr) / sizeof(arr[0]); i++)
+	{
+		cout << arr[i] << tab;
+	}
+	cout << endl;
+
+	for (int i : arr)
+	{
+		cout << i << tab;
+	}
+	cout << endl;
+#endif // RANGE_BASED_FOR_ARRAY
+
+#ifdef RANGE_BASED_FOR_LIST
+	ForwardList list = { 3, 5, 8, 13, 21 };	
+	//list.print();
+	for (int i = 0; i < list.get_size(); i++)
+	{
+		cout << list[i] << tab;
+	}
+	cout << endl;
+	//cout << list.get_begin() << endl;
 	
+	
+	for (int i : list)
+	{
+		cout << i << tab;
+	}
+	cout << endl;
+#endif // RANGE_BASED_FOR_LIST
+
 }

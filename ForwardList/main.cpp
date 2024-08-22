@@ -8,10 +8,14 @@ using std::endl;
 
 class Element
 {
+private:
+
 	int Data;
 	Element* pNext;
 	static int count;
+
 public:
+
 	Element(int Data, Element* pNext = nullptr) : Data(Data), pNext(pNext)
 	{
 		count++;
@@ -23,16 +27,63 @@ public:
 		cout << "EDestructor:\t" << this << endl;
 	}
 	friend class ForwardList;
+	friend class Iterator;
 };
 
 int Element::count = 0;
 
+class Iterator
+{
+private:
+
+	Element* Temp;
+
+public:
+
+	Iterator(Element* Temp = nullptr) : Temp(Temp)
+	{
+		cout << "itConstructor:\t" << this << endl;
+	}
+	~Iterator()
+	{
+		cout << "itDestructor:\t" << this << endl;
+	}
+
+	Iterator& operator++()
+	{
+		Temp = Temp->pNext;
+		return *this;
+	}
+
+	bool operator!=(const Iterator& other)const
+	{
+		return this->Temp != other.Temp;
+	}
+
+	int operator*()
+	{
+		return Temp->Data;
+	}
+};
+
 class ForwardList
 {
+private:
+
 	Element* Head;
-	unsigned int size;
-	
+	unsigned int size;	
+
 public:
+
+	Iterator begin()
+	{
+		return Head;
+	}
+	Iterator end()
+	{
+		return nullptr;
+	}
+	//construstors
 	ForwardList()
 	{
 		Head = nullptr;
@@ -85,17 +136,6 @@ public:
 		other.size = 0;
 		cout << "MoveAssignment\t" << this << endl;
 		return *this;
-	}
-	int& operator[](int idx)
-	{		
-		int ctr = 0;
-		Element* Temp = this->Head;
-		while (Temp != nullptr)
-		{
-			if (ctr == idx)	return Temp->Data;
-			Temp = Temp->pNext;
-			ctr++;
-		}
 	}	
 
 	//adding elements
@@ -172,11 +212,7 @@ public:
 			cout << Temp << tab << Temp->Data << tab << Temp->pNext << endl;
 		cout << "Количество элементов списка: " << size << endl;
 		cout << "Общее количество элементов: " << Element::count << endl;
-	}	
-	unsigned int get_size()
-	{
-		return size;
-	}	
+	}		
 };
 
 //#define BASE_CHECK
@@ -260,14 +296,6 @@ void main()
 #ifdef RANGE_BASED_FOR_LIST
 	ForwardList list = { 3, 5, 8, 13, 21 };	
 	//list.print();
-	for (int i = 0; i < list.get_size(); i++)
-	{
-		cout << list[i] << tab;
-	}
-	cout << endl;
-	//cout << list.get_begin() << endl;
-	
-	
 	for (int i : list)
 	{
 		cout << i << tab;

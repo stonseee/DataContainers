@@ -134,7 +134,7 @@ public:
 	class Iterator : public ConstIterator
 	{
 	public:
-		Iterator(Element* Temp = nullptr) :ConstIterator(Temp) {}
+		Iterator(Element* Temp = nullptr) : ConstIterator(Temp) {}
 		~Iterator() {}
 		int& operator*()
 		{
@@ -144,7 +144,7 @@ public:
 	class ReverseIterator : public ConstReverseIterator
 	{
 	public:
-		ReverseIterator(Element* Temp = nullptr) :ConstReverseIterator(Temp) {}
+		ReverseIterator(Element* Temp = nullptr) : ConstReverseIterator(Temp) {}
 		~ReverseIterator() {}
 		int& operator*()
 		{
@@ -366,6 +366,13 @@ List operator+(const List& left, const List& right)
 	}
 	return buffer;
 }
+void Grow(List& list)
+{
+	for (List::Iterator it = list.begin(); it != list.end(); ++it)
+	{
+		*it *= 10;
+	}
+}
 
 //#define BASE_CHECK
 //#define ConstIteratorS_CHECK
@@ -413,4 +420,7 @@ void main()
 	for (int i : list1)cout << i << tab; cout << endl;
 	for (int i : list2)cout << i << tab; cout << endl;
 	for (int i : list3)cout << i << tab; cout << endl;
+	Grow(list3);
+	for (int i : list3)cout << i << tab; cout << endl;
+	
 }

@@ -7,17 +7,18 @@ using std::endl;
 #define tab "\t"
 #define delimiter "-------------------------------"
 
+template<typename T>
 class List
 {
 	class Element
 	{
-		int Data;
+		T Data;
 		Element* pNext;
 		Element* pPrev;
 
 	public:
 
-		Element(int Data, Element* pNext = nullptr, Element* pPrev = nullptr)
+		Element(T Data, Element* pNext = nullptr, Element* pPrev = nullptr)
 			: Data(Data), pNext(pNext), pPrev(pPrev)
 		{
 			cout << "ElementConstructor:\t" << this << endl;
@@ -51,7 +52,7 @@ class List
 		}
 
 		//dereference operator
-		const int& operator*()const
+		const T& operator*()const
 		{
 			return Temp->Data;
 		}
@@ -73,24 +74,24 @@ public:
 		}
 		ConstIterator& operator++()
 		{
-			Temp = Temp->pNext;
+			ConstBaseIterator::Temp = ConstBaseIterator::Temp->pNext;
 			return *this;
 		}
 		ConstIterator operator++(int)
 		{
 			ConstIterator old = *this;
-			Temp = Temp->pNext;
+			ConstBaseIterator::Temp = ConstBaseIterator::Temp->pNext;
 			return old;
 		}
 		ConstIterator& operator--()
 		{
-			Temp = Temp->pPrev;
+			ConstBaseIterator::Temp = ConstBaseIterator::Temp->pPrev;
 			return *this;
 		}
 		ConstIterator operator--(int)
 		{
 			ConstIterator old = *this;
-			Temp = Temp->pPrev;
+			ConstBaseIterator::Temp = ConstBaseIterator::Temp->pPrev;
 			return old;
 		}		
 	};
@@ -110,24 +111,24 @@ public:
 		//incremento/decremento
 		ConstReverseIterator& operator++()
 		{
-			Temp = Temp->pPrev;
+			ConstBaseIterator::Temp = ConstBaseIterator::Temp->pPrev;
 			return *this;
 		}
 		ConstReverseIterator operator++(int)
 		{
 			ConstReverseIterator old = *this;
-			Temp = Temp->pPrev;
+			ConstBaseIterator::Temp = ConstBaseIterator::Temp->pPrev;
 			return old;
 		}
 		ConstReverseIterator& operator--()
 		{
-			Temp = Temp->pNext;
+			ConstBaseIterator::Temp = ConstBaseIterator::Temp->pNext;
 			return *this;
 		}
 		ConstReverseIterator operator--(int)
 		{
 			ConstReverseIterator old = *this;
-			Temp = Temp->pNext;
+			ConstBaseIterator::Temp = ConstBaseIterator::Temp->pNext;
 			return old;
 		}		
 	};
@@ -136,9 +137,9 @@ public:
 	public:
 		Iterator(Element* Temp = nullptr) : ConstIterator(Temp) {}
 		~Iterator() {}
-		int& operator*()
+		T& operator*()
 		{
-			return Temp->Data;
+			return ConstBaseIterator::Temp->Data;
 		}
 	};
 	class ReverseIterator : public ConstReverseIterator
@@ -146,9 +147,9 @@ public:
 	public:
 		ReverseIterator(Element* Temp = nullptr) : ConstReverseIterator(Temp) {}
 		~ReverseIterator() {}
-		int& operator*()
+		T& operator*()
 		{
-			return Temp->Data;
+			return ConstBaseIterator::Temp->Data;
 		}
 	};
 	ConstIterator begin() const
@@ -191,12 +192,12 @@ public:
 		size = 0;
 		cout << "ListConstrustor:\t" << this << endl;
 	}
-	List(const std::initializer_list<int>& il) : List()
+	List(const std::initializer_list<T>& il) : List()
 	{
-		for (int const* it = il.begin(); it != il.end(); ++it)
+		for (T const* it = il.begin(); it != il.end(); ++it)
 			push_back(*it);
 	}
-	List(const List& other) :List()
+	List(const List<T>& other) :List()
 	{
 		*this = other;
 		cout << "ListCopyConstructor:\t" << this << endl;
@@ -209,7 +210,7 @@ public:
 	}
 	
 	//adding elements
-	void push_front(int Data)
+	void push_front(T Data)
 	{
 		if (Head == nullptr && Tail == nullptr)
 		{
@@ -221,7 +222,7 @@ public:
 		}
 		size++;
 	}
-	void push_back(int Data)
+	void push_back(T Data)
 	{
 		if (Head == nullptr && Tail == nullptr)
 		{
@@ -233,7 +234,7 @@ public:
 		}
 		size++;
 	}
-	void insert(int Data, int idx)
+	void insert(T Data, int idx)
 	{
 		if (Head == nullptr && Tail == nullptr)
 		{
@@ -346,7 +347,7 @@ public:
 		cout << delimiter << endl;
 	}
 	
-	List& operator=(const List& other)
+	List<T>& operator=(const List<T>& other)
 	{
 		if (this == &other)return *this;
 		while (Head)pop_front();
@@ -356,19 +357,19 @@ public:
 	}	
 };
 
-List operator+(const List& left, const List& right)
+template<typename T>List<T> operator+(const List<T>& left, const List<T>& right)
 {	
-	List buffer = left;	
-	for (List::ConstIterator it = right.begin(); it != right.end(); ++it)
+	List<T> buffer = left;	
+	for (typename List<T>::ConstIterator it = right.begin(); it != right.end(); ++it)
 	{
 		buffer.push_back(*it);
 		//*it *= 10;
 	}
 	return buffer;
 }
-void Grow(List& list)
+template<typename T>void Grow(List<T>& list)
 {
-	for (List::Iterator it = list.begin(); it != list.end(); ++it)
+	for (typename List<T>::Iterator it = list.begin(); it != list.end(); ++it)
 	{
 		*it *= 10;
 	}
@@ -413,9 +414,9 @@ void main()
 	list1.print();
 #endif // ConstIteratorS_CHECK
 
-	List list1 = { 3, 5, 8, 13, 21 };
-	List list2 = { 34, 55, 89 };
-	List list3 = list1 + list2;
+	List<int> list1 = { 3, 5, 8, 13, 21 };
+	List<int> list2 = { 34, 55, 89 };
+	List<int> list3 = list1 + list2;
 	//list3.print();
 	for (int i : list1)cout << i << tab; cout << endl;
 	for (int i : list2)cout << i << tab; cout << endl;

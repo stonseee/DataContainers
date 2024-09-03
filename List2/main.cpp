@@ -67,4 +67,7 @@ void main()
 	for (int i : list3)cout << i << tab; cout << endl;
 	list3.print();
 	//list1.print();
+
+	List<std::string> s_list = { "Хорошо", "живет", "на", "свете", "Винни", "Пух" };
+	for (std::string i : s_list) cout << i << tab; cout << endl;
 }

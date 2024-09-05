@@ -1,6 +1,6 @@
 ﻿#define _CRT_SECURE_NO_WARNINGS
 #include<iostream>
-#include"List.h"
+#include<string>
 #include"List.cpp"
 using namespace std;
 using std::cout;
@@ -10,28 +10,8 @@ using std::endl;
 #define tab "\t"
 #define delimiter "-------------------------------"
 
-
 //#define BASE_CHECK
 //#define ConstIteratorS_CHECK
-
-template<typename T>List<T> operator+(const List<T>& left, const List<T>& right)
-{
-	List<T> buffer = left;
-	for (typename List<T>::ConstIterator it = right.begin(); it != right.end(); ++it)
-	{
-		buffer.push_back(*it);
-		//*it *= 10;
-	}
-	return buffer;
-}
-
-template<typename T>void Grow(List<T>& list)
-{
-	for (typename List<T>::Iterator it = list.begin(); it != list.end(); ++it)
-	{
-		*it *= 10;
-	}
-}
 
 void main()
 {

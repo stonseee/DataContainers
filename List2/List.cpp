@@ -316,13 +316,21 @@ template<typename T>List<T>& List<T>::operator=(const List<T>& other)
 	return *this;
 }
 
-//template<typename T>List<T> operator+(const List<T>& left, const List<T>& right)
-//{
-//	List<T> buffer = left;
-//	for (typename List<T>::ConstIterator it = right.begin(); it != right.end(); ++it)
-//	{
-//		buffer.push_back(*it);
-//		//*it *= 10;
-//	}
-//	return buffer;
-//}
+template<typename T>List<T> operator+(const List<T>& left, const List<T>& right)
+{
+	List<T> buffer = left;
+	for (typename List<T>::ConstIterator it = right.begin(); it != right.end(); ++it)
+	{
+		buffer.push_back(*it);
+		//*it *= 10;
+	}
+	return buffer;
+}
+
+template<typename T>void Grow(List<T>& list)
+{
+	for (typename List<T>::Iterator it = list.begin(); it != list.end(); ++it)
+	{
+		*it *= 10;
+	}
+}

@@ -11,8 +11,7 @@ using std::endl;
 
 //template<typename T>List<T> operator+(const List<T>& left, const List<T>& right);
 
-template<typename T>
-class List
+template<typename T>class List
 {
 	class Element
 	{
@@ -46,20 +45,11 @@ class List
 		~ConstBaseIterator() {}
 
 		//comparison operators
-		bool operator==(const ConstBaseIterator& other)const
-		{
-			return this->Temp == other.Temp;
-		}
-		bool operator!=(const ConstBaseIterator& other)const
-		{
-			return this->Temp != other.Temp;
-		}
+		bool operator==(const ConstBaseIterator& other)const;
+		bool operator!=(const ConstBaseIterator& other)const;
 
 		//dereference operator
-		const T& operator*()const
-		{
-			return Temp->Data;
-		}
+		const T& operator*()const;
 	};
 
 public:
@@ -68,93 +58,39 @@ public:
 	{
 	public:
 
-		ConstIterator(Element* Temp = nullptr) : ConstBaseIterator(Temp)
-		{
-			cout << "ConstIteratorConstructor:\t" << this << endl;
-		}
-		~ConstIterator()
-		{
-			cout << "ConstIteratorDestructor:\t" << this << endl;
-		}
-		ConstIterator& operator++()
-		{
-			ConstBaseIterator::Temp = ConstBaseIterator::Temp->pNext;
-			return *this;
-		}
-		ConstIterator operator++(int)
-		{
-			ConstIterator old = *this;
-			ConstBaseIterator::Temp = ConstBaseIterator::Temp->pNext;
-			return old;
-		}
-		ConstIterator& operator--()
-		{
-			ConstBaseIterator::Temp = ConstBaseIterator::Temp->pPrev;
-			return *this;
-		}
-		ConstIterator operator--(int)
-		{
-			ConstIterator old = *this;
-			ConstBaseIterator::Temp = ConstBaseIterator::Temp->pPrev;
-			return old;
-		}
+		ConstIterator(Element* Temp = nullptr);
+		~ConstIterator();
+		ConstIterator& operator++();
+		ConstIterator operator++(int);
+		ConstIterator& operator--();
+		ConstIterator operator--(int);
 	};
 	class ConstReverseIterator : public ConstBaseIterator
 	{
 	public:
 
-		ConstReverseIterator(Element* Temp = nullptr) : ConstBaseIterator(Temp)
-		{
-			cout << "ConstReverseIteratorConstructor:\t" << this << endl;
-		}
-		~ConstReverseIterator()
-		{
-			cout << "ConstReverseIteratorDestructor:\t" << this << endl;
-		}
+		ConstReverseIterator(Element* Temp = nullptr);
+		~ConstReverseIterator();
 
 		//incremento/decremento
-		ConstReverseIterator& operator++()
-		{
-			ConstBaseIterator::Temp = ConstBaseIterator::Temp->pPrev;
-			return *this;
-		}
-		ConstReverseIterator operator++(int)
-		{
-			ConstReverseIterator old = *this;
-			ConstBaseIterator::Temp = ConstBaseIterator::Temp->pPrev;
-			return old;
-		}
-		ConstReverseIterator& operator--()
-		{
-			ConstBaseIterator::Temp = ConstBaseIterator::Temp->pNext;
-			return *this;
-		}
-		ConstReverseIterator operator--(int)
-		{
-			ConstReverseIterator old = *this;
-			ConstBaseIterator::Temp = ConstBaseIterator::Temp->pNext;
-			return old;
-		}
+		ConstReverseIterator& operator++();
+		ConstReverseIterator operator++(int);
+		ConstReverseIterator& operator--();
+		ConstReverseIterator operator--(int);
 	};
 	class Iterator : public ConstIterator
 	{
 	public:
 		Iterator(Element* Temp = nullptr) : ConstIterator(Temp) {}
 		~Iterator() {}
-		T& operator*()
-		{
-			return ConstBaseIterator::Temp->Data;
-		}
+		T& operator*();
 	};
 	class ReverseIterator : public ConstReverseIterator
 	{
 	public:
 		ReverseIterator(Element* Temp = nullptr) : ConstReverseIterator(Temp) {}
 		~ReverseIterator() {}
-		T& operator*()
-		{
-			return ConstBaseIterator::Temp->Data;
-		}
+		T& operator*();
 	};
 	ConstIterator begin() const;	
 	ConstIterator end() const;
@@ -185,8 +121,18 @@ public:
 	void print()const;	
 	void reverse_print()const;	
 
-	List<T>& operator=(const List<T>& other);
-	
+	List<T>& operator=(const List<T>& other);	
 };
 
-template<typename T>List<T> operator+(const List<T>& left, const List<T>& right);
+//                Конец объявления класса
+
+//template<typename T>List<T> operator+(const List<T>& left, const List<T>& right)
+//{
+//	List<T> buffer = left;
+//	for (typename List<T>::ConstIterator it = right.begin(); it != right.end(); ++it)
+//	{
+//		buffer.push_back(*it);
+//		//*it *= 10;
+//	}
+//	return buffer;
+//}

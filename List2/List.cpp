@@ -1,6 +1,112 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include"List.h"
 
+/////////////////////////////////////////////////////
+/////////////     CONST ITERATORS       /////////////  
+
+//                 ConstIterator
+template<typename T>List<T>::ConstIterator::ConstIterator(Element* Temp) : ConstBaseIterator(Temp)
+{
+	cout << "ConstIteratorConstructor:\t" << this << endl;
+}
+template<typename T>List<T>::ConstIterator::~ConstIterator()
+{
+	cout << "ConstIteratorDestructor:\t" << this << endl;
+}
+
+template<typename T>typename List<T>::ConstIterator& List<T>::ConstIterator::operator++()
+{
+	ConstBaseIterator::Temp = ConstBaseIterator::Temp->pNext;
+	return *this;
+}
+template<typename T>typename List<T>::ConstIterator List<T>::ConstIterator::operator++(int)
+{
+	ConstIterator old = *this;
+	ConstBaseIterator::Temp = ConstBaseIterator::Temp->pNext;
+	return old;
+}
+template<typename T>typename List<T>::ConstIterator& List<T>::ConstIterator::operator--()
+{
+	ConstBaseIterator::Temp = ConstBaseIterator::Temp->pPrev;
+	return *this;
+}
+template<typename T>typename List<T>::ConstIterator List<T>::ConstIterator::operator--(int)
+{
+	ConstIterator old = *this;
+	ConstBaseIterator::Temp = ConstBaseIterator::Temp->pPrev;
+	return old;
+}
+
+//              ConstReverseIterator
+template<typename T>List<T>::ConstReverseIterator::ConstReverseIterator(Element* Temp) : ConstBaseIterator(Temp)
+{
+	cout << "ConstReverseIteratorConstructor:\t" << this << endl;
+}
+template<typename T>List<T>::ConstReverseIterator::~ConstReverseIterator()
+{
+	cout << "ConstReverseIteratorDestructor:\t" << this << endl;
+}
+
+template<typename T>typename List<T>::ConstReverseIterator& List<T>::ConstReverseIterator::operator++()
+{
+	ConstBaseIterator::Temp = ConstBaseIterator::Temp->pPrev;
+	return *this;
+}
+template<typename T>typename List<T>::ConstReverseIterator List<T>::ConstReverseIterator::operator++(int)
+{
+	ConstReverseIterator old = *this;
+	ConstBaseIterator::Temp = ConstBaseIterator::Temp->pPrev;
+	return old;
+}
+template<typename T>typename List<T>::ConstReverseIterator& List<T>::ConstReverseIterator::operator--()
+{
+	ConstBaseIterator::Temp = ConstBaseIterator::Temp->pNext;
+	return *this;
+}
+template<typename T>typename List<T>::ConstReverseIterator List<T>::ConstReverseIterator::operator--(int)
+{
+	ConstReverseIterator old = *this;
+	ConstBaseIterator::Temp = ConstBaseIterator::Temp->pNext;
+	return old;
+}
+
+//               ConstBaseIterator
+template<typename T>bool List<T>::ConstBaseIterator::operator==(const ConstBaseIterator& other)const
+{
+	return this->Temp == other.Temp;
+}
+template<typename T>bool List<T>::ConstBaseIterator::operator!=(const ConstBaseIterator& other)const
+{
+	return this->Temp != other.Temp;
+}
+
+template<typename T>const T& List<T>::ConstBaseIterator::operator*()const
+{
+	return Temp->Data;
+}
+
+/////////////     CONST ITERATORS       /////////////  
+/////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////
+/////////////         ITERATORS         /////////////  
+
+template<typename T>T& List<T>::Iterator::operator*()
+{
+	return ConstBaseIterator::Temp->Data;
+}
+
+template<typename T>T& List<T>::ReverseIterator::operator*()
+{
+	return ConstBaseIterator::Temp->Data;
+}
+
+/////////////         ITERATORS         /////////////  
+/////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////
+/////////////          MEMBERS          /////////////     
+
 template<typename T>typename List<T>::ConstIterator List<T>::begin() const
 {
 	return Head;
@@ -210,13 +316,13 @@ template<typename T>List<T>& List<T>::operator=(const List<T>& other)
 	return *this;
 }
 
-template<typename T>List<T> operator+(const List<T>& left, const List<T>& right)
-{
-	List<T> buffer = left;
-	for (typename List<T>::ConstIterator it = right.begin(); it != right.end(); ++it)
-	{
-		buffer.push_back(*it);
-		//*it *= 10;
-	}
-	return buffer;
-}
+//template<typename T>List<T> operator+(const List<T>& left, const List<T>& right)
+//{
+//	List<T> buffer = left;
+//	for (typename List<T>::ConstIterator it = right.begin(); it != right.end(); ++it)
+//	{
+//		buffer.push_back(*it);
+//		//*it *= 10;
+//	}
+//	return buffer;
+//}

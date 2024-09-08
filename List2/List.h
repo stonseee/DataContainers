@@ -29,6 +29,7 @@ template<typename T>class List
 		{
 			cout << "ElementDestructor:\t" << this << endl;
 		}
+		void set_data(T Data);
 		friend class List;
 	}*Head, * Tail;
 	size_t size;
@@ -121,6 +122,8 @@ public:
 	void reverse_print()const;	
 
 	List<T>& operator=(const List<T>& other);	
+
+	void set_data(T Data);
 };
 
 //                Конец объявления класса

@@ -13,6 +13,13 @@ using std::endl;
 //#define BASE_CHECK
 //#define ConstIteratorS_CHECK
 
+template<typename T>void queue(List<T>& list, T Data)
+{
+	//list.pop_front();
+	//list.push_front(Data);
+	list.set_data(Data);
+}
+
 void main()
 {
 	setlocale(LC_ALL, "");
@@ -56,10 +63,19 @@ void main()
 	//for (int i : list2)cout << i << tab; cout << endl;
 	//for (int i : list3)cout << i << tab; cout << endl;
 	//Grow(list3);
-	for (int i : list3)cout << i << tab; cout << endl;
-	list3.print();
+	//for (int i : list3)cout << i << tab; cout << endl;
+	//list3.print();
 	//list1.print();
 
-	List<std::string> s_list = { "Хорошо", "живет", "на", "свете", "Винни", "Пух" };
-	for (std::string i : s_list) cout << i << tab; cout << endl;
+	//List<std::string> s_list = { "Хорошо", "живет", "на", "свете", "Винни", "Пух" };
+	//for (std::string i : s_list) cout << i << tab; cout << endl;
+
+	list1.print();
+	int i = 1;	
+	while (i != 0)
+	{
+		cin >> i;
+		queue(list1, i);
+		list1.print();
+	}
 }

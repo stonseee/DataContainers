@@ -30,7 +30,7 @@ template<typename T>class List
 			cout << "ElementDestructor:\t" << this << endl;
 		}
 		void set_data(T Data);
-		friend class List;
+		friend class List;		
 	}*Head, * Tail;
 	size_t size;
 	class ConstBaseIterator
@@ -83,6 +83,7 @@ public:
 	public:
 		Iterator(Element* Temp = nullptr) : ConstIterator(Temp) {}
 		~Iterator() {}
+		
 		T& operator*();
 	};
 	class ReverseIterator : public ConstReverseIterator

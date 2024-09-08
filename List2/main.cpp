@@ -17,7 +17,8 @@ template<typename T>void queue(List<T>& list, T Data)
 {
 	//list.pop_front();
 	//list.push_front(Data);
-	list.set_data(Data);
+
+	list.set_data(Data);	
 }
 
 void main()

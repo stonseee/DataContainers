@@ -47,7 +47,7 @@ public:
 	~Iterator()
 	{
 		cout << "itDestructor:\t" << this << endl;
-	}
+	}	
 
 	Iterator& operator++()
 	{
@@ -215,6 +215,12 @@ public:
 	}		
 };
 
+void stack(ForwardList& list, int Data)
+{
+	list.push_front(Data);
+	list.pop_back();
+}
+
 //#define BASE_CHECK
 //#define COUNT_CHECK
 //#define PERFORMANCE_CHECK
@@ -301,6 +307,15 @@ void main()
 		cout << i << tab;
 	}
 	cout << endl;
+
+	int n = 1;
+	while (n)
+	{
+		cin >> n;
+		stack(list, n);
+		list.print();
+	}
+	
 #endif // RANGE_BASED_FOR_LIST
 
 }

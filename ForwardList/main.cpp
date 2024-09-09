@@ -74,7 +74,7 @@ private:
 	unsigned int size;	
 
 public:
-
+	
 	Iterator begin()
 	{
 		return Head;
@@ -212,14 +212,30 @@ public:
 			cout << Temp << tab << Temp->Data << tab << Temp->pNext << endl;
 		cout << "Количество элементов списка: " << size << endl;
 		cout << "Общее количество элементов: " << Element::count << endl;
-	}		
+	}	
 };
 
-void stack(ForwardList& list, int Data)
+class Stack : ForwardList
 {
-	list.push_front(Data);
-	list.pop_back();
-}
+public:	
+	Stack(const std::initializer_list<int>& il) : ForwardList(il)
+	{
+
+	}
+	~Stack()
+	{
+
+	}
+	void add(int Data)
+	{
+		push_back(Data);
+		pop_front();
+	}
+	void print()
+	{
+		ForwardList::print();
+	}
+};
 
 //#define BASE_CHECK
 //#define COUNT_CHECK
@@ -300,20 +316,23 @@ void main()
 #endif // RANGE_BASED_FOR_ARRAY
 
 #ifdef RANGE_BASED_FOR_LIST
-	ForwardList list = { 3, 5, 8, 13, 21 };	
+	//ForwardList list = { 3, 5, 8, 13, 21 };	
 	//list.print();
-	for (int i : list)
+	/*for (int i : list)
 	{
 		cout << i << tab;
 	}
-	cout << endl;
+	cout << endl;*/
 
+	Stack stack = { 3, 5, 8, 13, 21 };
+	
+	stack.print();
 	int n = 1;
 	while (n)
 	{
 		cin >> n;
-		stack(list, n);
-		list.print();
+		stack.add(n);
+		stack.print();		
 	}
 	
 #endif // RANGE_BASED_FOR_LIST

@@ -76,7 +76,9 @@ void main()
 	while (i != 0)
 	{
 		cin >> i;
-		queue(list1, i);
+		queue(list1, i);		
 		list1.print();
 	}
+
+	
 }

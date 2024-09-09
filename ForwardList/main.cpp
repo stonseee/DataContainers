@@ -215,7 +215,7 @@ public:
 	}	
 };
 
-class Stack : ForwardList
+class Stack : public ForwardList
 {
 public:	
 	Stack(const std::initializer_list<int>& il) : ForwardList(il)
@@ -230,11 +230,7 @@ public:
 	{
 		push_back(Data);
 		pop_front();
-	}
-	void print()
-	{
-		ForwardList::print();
-	}
+	}	
 };
 
 //#define BASE_CHECK

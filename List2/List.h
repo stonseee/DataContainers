@@ -10,6 +10,8 @@ using std::endl;
 #define tab "\t"
 #define delimiter "-------------------------------"
 
+template<typename>class Queue;
+
 template<typename T>class List
 {
 	class Element
@@ -29,7 +31,7 @@ template<typename T>class List
 		{
 			cout << "ElementDestructor:\t" << this << endl;
 		}
-		void set_data(T Data);
+		//void set_data(T Data);
 		friend class List;		
 	}*Head, * Tail;
 	size_t size;
@@ -124,7 +126,24 @@ public:
 
 	List<T>& operator=(const List<T>& other);	
 
-	void set_data(T Data);
+	//void set_data(T Data);
+	friend class Queue<T>;
+};
+
+template<typename T>class Queue : public List<T>
+{
+public:
+	template<typename T>Queue(const std::initializer_list<T>& il) : List<T>(il)
+	{
+
+	}
+	template<typename T>void add(T Data)
+	{
+		//this->pop_front();
+		//this->push_front(Data);
+		List<T>::pop_front();
+		List<T>::push_front(Data);
+	}
 };
 
 //                Конец объявления класса

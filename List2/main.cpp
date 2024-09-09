@@ -13,13 +13,13 @@ using std::endl;
 //#define BASE_CHECK
 //#define ConstIteratorS_CHECK
 
-template<typename T>void queue(List<T>& list, T Data)
-{
-	//list.pop_front();
-	//list.push_front(Data);
-
-	list.set_data(Data);	
-}
+//template<typename T>void queue(List<T>& list, T Data)
+//{
+//	//list.pop_front();
+//	//list.push_front(Data);
+//
+//	//list.set_data(Data);	
+//}
 
 void main()
 {
@@ -56,9 +56,9 @@ void main()
 	list.print();
 	list1.print();
 #endif // ConstIteratorS_CHECK
-	List<int> list1 = { 3, 5, 8, 13, 21 };
-	List<int> list2 = { 34, 55, 89 };
-	List<int> list3 = list1 + list2;
+	//List<int> list1 = { 3, 5, 8, 13, 21 };
+	//List<int> list2 = { 34, 55, 89 };
+	//List<int> list3 = list1 + list2;
 	//list3.print();
 	//for (int i : list1)cout << i << tab; cout << endl;
 	//for (int i : list2)cout << i << tab; cout << endl;
@@ -71,13 +71,17 @@ void main()
 	//List<std::string> s_list = { "Хорошо", "живет", "на", "свете", "Винни", "Пух" };
 	//for (std::string i : s_list) cout << i << tab; cout << endl;
 
-	list1.print();
+	
+
+	Queue<int> q = { 3, 5, 8, 13, 21 };
 	int i = 1;	
 	while (i != 0)
 	{
 		cin >> i;
-		queue(list1, i);		
-		list1.print();
+		q.add(i);
+		q.print();
+		//queue(list1, i);		
+		//list1.print();
 	}
 
 	

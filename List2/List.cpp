@@ -1,10 +1,10 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include"List.h"
 
-template<typename T>void List<T>::Element::set_data(T Data)
-{
-	this->Data = Data;
-}
+//template<typename T>void List<T>::Element::set_data(T Data)
+//{
+//	this->Data = Data;
+//}
 
 /////////////////////////////////////////////////////
 /////////////     CONST ITERATORS       /////////////  
@@ -321,10 +321,10 @@ template<typename T>List<T>& List<T>::operator=(const List<T>& other)
 	return *this;
 }
 
-template<typename T>void List<T>::set_data(T Data)
-{
-	Head->set_data(Data);
-}
+//template<typename T>void List<T>::set_data(T Data)
+//{
+//	Head->set_data(Data);
+//}
 
 template<typename T>List<T> operator+(const List<T>& left, const List<T>& right)
 {

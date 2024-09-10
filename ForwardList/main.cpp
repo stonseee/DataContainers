@@ -215,7 +215,7 @@ public:
 	}	
 };
 
-class Stack : public ForwardList
+class Stack :  ForwardList
 {
 public:	
 	Stack(const std::initializer_list<int>& il) : ForwardList(il)
@@ -322,13 +322,12 @@ void main()
 
 	Stack stack = { 3, 5, 8, 13, 21 };
 	
-	stack.print();
 	int n = 1;
 	while (n)
 	{
 		cin >> n;
 		stack.add(n);
-		stack.print();		
+			
 	}
 	
 #endif // RANGE_BASED_FOR_LIST
